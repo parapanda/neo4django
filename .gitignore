@@ -14,5 +14,5 @@ lib
 build
 dist
 /.idea
-/docker/data/*
-/docker/conf/*
+/docker/neo4j/data/*
+/docker/neo4j/conf/*
