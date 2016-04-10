@@ -5,9 +5,9 @@ from pretend import stub
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Model as DjangoModel
 
-from neo4django import utils
-from neo4django.neo4jclient import EnhancedGraphDatabase
-from neo4django.db.models import NodeModel
+from neo4django2 import utils
+from neo4django2.neo4jclient import EnhancedGraphDatabase
+from neo4django2.db.models import NodeModel
 
 
 # Nose does a weird copying from unittest asserts, meaning

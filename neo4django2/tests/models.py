@@ -1,4 +1,4 @@
-from neo4django.db import models
+from neo4django2.db import models
 
 class IndexedMouse(models.NodeModel):
     name = models.StringProperty(indexed=True)

@@ -1,7 +1,7 @@
-include AUTHORS.txt
-include NOTICE.txt
-include LICENSE-GPL.txt
 include MANIFEST.in
-include README.rst
+include AUTHORS.md
+include NOTICE.md
+include README.md
+include LICENSE
 include reg_settings.py
 recursive-include neo4django/gremlin *.groovy

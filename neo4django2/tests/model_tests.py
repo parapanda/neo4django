@@ -8,9 +8,9 @@ from nose.tools import eq_
 def setup():
     global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings, models
 
-    from neo4django.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
             neo_constants, settings
-    from neo4django.db import models
+    from neo4django2.db import models
 
 def teardown():
     gdb.cleandb()
@@ -100,19 +100,19 @@ def test_model_inheritance():
     jake = TypeOPerson(name='Jake', hobby='kayaking')
     jake.save()
     assert jake.hobby == 'kayaking'
-   
+
 def test_nodemodel_independence():
     """Tests that NodeModel subclasses can be created and deleted independently."""
 
     class TestSubclass(models.NodeModel):
         age = models.IntegerProperty()
-    
+
     n1 = TestSubclass(age = 5)
     n1.save()
 
     class TestSubclass(models.NodeModel):
         pass
-    
+
     n2 = TestSubclass()
 
     assert not hasattr(n2, 'age'), "Age should not be defined, as the new class didn't define it."
@@ -190,14 +190,14 @@ def test_model_pickling():
 
     tom.chases = jerry
     tom.save()
-    
+
     restored_tom = pickle_and_restore(tom)
 
     pickle_eq(tom, restored_tom)
     pickle_eq(jerry, list(restored_tom.chases.all())[0])
 
     # try a model with a lazy relation
-    
+
     garfield = LazyCat(name='Garfield')
     garfield.chases.add(jerry)
 

@@ -10,11 +10,11 @@ stdout = sys.stdout
 
 def setup():
     global Person, neo4django, gdb, Query, OPERATORS, IndexedMouse, \
-           DEFAULT_DB_ALIAS, Condition, models, RelatedCat, RelatedDog 
+           DEFAULT_DB_ALIAS, Condition, models, RelatedCat, RelatedDog
 
-    from neo4django.tests import Person, neo4django, gdb
-    from neo4django.db import DEFAULT_DB_ALIAS, models
-    from neo4django.db.models.query import Query, OPERATORS, \
+    from neo4django2.tests import Person, neo4django, gdb
+    from neo4django2.db import DEFAULT_DB_ALIAS, models
+    from neo4django2.db.models.query import Query, OPERATORS, \
             Condition
 
     from django.db.models import get_model
@@ -35,7 +35,7 @@ def test_create():
     except:
         raise AssertionError('Pete was not created or was not given a primary '
                              'key.')
- 
+
 @with_setup(None, teardown)
 def test_delete():
     """Confirm 'delete()' works for NodeQuerySet."""
@@ -59,13 +59,13 @@ def test_iter():
 
 @with_setup(None, teardown)
 def test_dates():
-    """Testing dates() with simple time right now""" 
-    
+    """Testing dates() with simple time right now"""
+
     class DatedPaper(models.NodeModel):
         name = models.StringProperty()
         date = models.DateProperty()
         datetime = models.DateTimeProperty()
-        
+
     day0 = datetime.date.today()
     time0 = datetime.datetime.now()
     paper = DatedPaper(name='Papes', date = day0, datetime = time0)
@@ -267,7 +267,7 @@ def test_in_id():
     uninteresting_man = Person.objects.create(name=boring_name, age=boring_age)
 
     Person.objects.create(age=boring_age)
-    
+
     people = list(Person.objects.filter(id__in=(interesting_man.id, uninteresting_man.id)))
     eq_(len(people), 2)
     eq_([boring_age, age], sorted(p.age for p in people))
@@ -293,7 +293,7 @@ def test_in_id():
         id__in=(interesting_man.id,)
         ).filter(id__in=(uninteresting_man.id,))
     eq_(len(only_interesting), 0)
-    
+
     # Passing in an empty qs -- replicate django
     eq_(len(Person.objects.filter(id__in=[])), 0)
 
@@ -425,7 +425,7 @@ def test_filter_array_member():
 @with_setup(setup_teens, teardown)
 def test_filter_in():
     q = Person.objects.filter(age__in=[15, 12])
-    
+
     eq_(len(q), 4)
     assert all(p.age in [15,12] for p in q)
 
@@ -497,7 +497,7 @@ def test_filter_startswith():
 @with_setup(None, teardown)
 def test_filter_istartswith():
     make_people(['Pete', 'John', 'peter'],[32,25,30])
-    
+
     q1 = Person.objects.filter(name__istartswith='Pete')
     eq_(len(q1), 2)
     assert all(p.name.lower().startswith('pete') for p in q1)
@@ -652,14 +652,14 @@ def test_select_related():
                 for m in c.chases.all():
                     mice.append(m)
                     m.name
-        
+
         #check correctness, leave performance for benchmarking
         spike = filter(lambda d: d.name == 'Spike', dogs)[0]
         tom = filter(lambda c: c.name == 'Tom', cats)[0]
         jerry = filter(lambda m: m.name == 'jerry', mice)[0]
         eq_(list(spike.chases.all())[0], tom)
         eq_(list(tom.chases.all())[0], jerry)
-    
+
     check_dog_hier_from_q(RelatedDog.objects.all().select_related(depth=2))
 
     #test reverse relation with an index-based query
@@ -667,7 +667,7 @@ def test_select_related():
     jerry_chasers = list(jerry.relatedcat_set.all())
     eq_(len(jerry_chasers), 1)
     eq_(jerry_chasers[0].name, 'Tom')
-    
+
     #try the hierarchy with a field-based select_related
     check_dog_hier_from_q(RelatedDog.objects.all().select_related('chases','chases__chases'))
 
@@ -699,7 +699,7 @@ def test_pk_shortcut():
     jerry = IndexedMouse.objects.get(name='jerry')
     other_jerry = IndexedMouse.objects.get(pk=jerry.id)
     eq_(jerry, other_jerry)
-    
+
     tom = RelatedCat.objects.get(chases__pk=jerry.id)
     eq_(tom.name, 'Tom')
 
@@ -773,7 +773,7 @@ def test_order_by():
     people = Person.objects.all().order_by('age')
     eq_(len(people), 5)
     eq_(list(people), sorted(list(people), key=lambda p:p.age))
-    
+
     # check the reverse order
     people = Person.objects.all().order_by('-age')
     eq_(list(people), sorted(list(people), key=lambda p:p.age, reverse=True))

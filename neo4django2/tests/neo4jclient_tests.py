@@ -11,9 +11,9 @@ class MyGraphDatabase(EnhancedGraphDatabase):
 def setup():
     global neo4django, gdb, neo4jclient, connection
 
-    from neo4django.tests import neo4django, gdb
-    from neo4django import neo4jclient
-    from neo4django.db import connection
+    from neo4django2.tests import neo4django, gdb
+    from neo4django2 import neo4jclient
+    from neo4django2.db import connection
 
 def teardown():
     gdb.cleandb()

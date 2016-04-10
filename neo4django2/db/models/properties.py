@@ -12,17 +12,17 @@ from django.utils import timezone, datetime_safe
 from django.forms import fields as formfields
 from django.conf import settings
 
-from neo4django.decorators import transactional
+from neo4django2.decorators import transactional
 from .base import NodeModel
 from .relationships import Relationship
 from .. import connections
-from neo4django.validators import (validate_array,
-                                   validate_str_array,
-                                   validate_int_array,
-                                   ElementValidator)
-from neo4django.utils import AttrRouter, write_through
-from neo4django.decorators import borrows_methods
-from neo4django.constants import ERROR_ATTR
+from neo4django2.validators import (validate_array,
+                                    validate_str_array,
+                                    validate_int_array,
+                                    ElementValidator)
+from neo4django2.utils import AttrRouter, write_through
+from neo4django2.decorators import borrows_methods
+from neo4django2.constants import ERROR_ATTR
 
 MIN_INT = -9223372036854775808
 MAX_INT = 9223372036854775807

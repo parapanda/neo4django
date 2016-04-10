@@ -7,8 +7,8 @@ from threading import local
 
 from django.core.exceptions import ImproperlyConfigured
 
-from neo4django.decorators import transactional
-from neo4django.neo4jclient import EnhancedGraphDatabase
+from neo4django2.decorators import transactional
+from neo4django2.neo4jclient import EnhancedGraphDatabase
 
 
 class StubbornDict(dict):
@@ -385,7 +385,7 @@ class Neo4djangoIntegrationRouter(object):
         type, a check if it is an instance of NodeModel is done instead.
         """
         # Imported here for circular imports
-        from neo4django.db.models import NodeModel
+        from neo4django2.db.models import NodeModel
 
         try:
             return issubclass(obj, NodeModel)

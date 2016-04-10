@@ -10,7 +10,7 @@ from django.db.models import signals
 def setup():
     global Person, gdb
 
-    from neo4django.tests import Person, gdb
+    from neo4django2.tests import Person, gdb
 
 def teardown():
     gdb.cleandb()

@@ -4,8 +4,8 @@ from django.core.exceptions import FieldError, ObjectDoesNotExist
 def setup():
     global Person, neo4django, settings, gdb, models
 
-    from neo4django.tests import Person, neo4django, gdb
-    from neo4django.db import models
+    from neo4django2.tests import Person, neo4django, gdb
+    from neo4django2.db import models
 
 def teardown():
     gdb.cleandb()
@@ -20,13 +20,13 @@ def test_basic_relationship():
                 rel_type = neo4django.Outgoing.OWNED_BY,
                 related_name = 'papers'
             )
-    
+
     sandra = Person(name="Sandra")
     sandra.save()
     lifesWork = RelatedPaper()
     lifesWork.save()
     lifesWork.authors.add(sandra)
-    
+
     lifesWork.save()
     work = list(sandra.papers.all())
     assert lifesWork in work, "Paper not found in %s" % repr(work)
@@ -49,10 +49,10 @@ def test_basic_relationship_manager():
     boring_paper = SomeOtherPaper()
     boring_paper.authors.add(pete)
     eq_(list(boring_paper.authors.all()), [pete])
-    
+
     boring_paper.authors.remove(pete)
     eq_(list(boring_paper.authors.all()), [])
-    
+
     other_paper = SomeOtherPaper.objects.create()
     other_paper.authors.add(pete)
     other_paper.authors.clear()
@@ -181,7 +181,7 @@ def test_ordering():
 
     actors = [Actor(name=n) for n in ['Johnny','Angelina','Jennifer','Tobey']]
     for a in actors: a.save()
-    
+
     superhero_flick = MovieCredits()
     superhero_flick.save()
     for a in actors: superhero_flick.actors.add(a)
@@ -294,7 +294,7 @@ def test_relationship_none():
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
-    
+
     pbest = Poll(question="Who's the best?")
     c = Choice(poll=pbest, choice='Chris')
     eq_(len(pbest.choices.none()), 0)
@@ -375,7 +375,7 @@ def test_relationship_filter_many_to_many():
         friends = models.Relationship('MyGuy',
                                       rel_type='FRIEND',
                                       related_name='friendsFrom')
-        
+
     tom = MyGuy.objects.create(name='tom')
     bill = MyGuy.objects.create(name='bill')
     bruce = MyGuy.objects.create(name='bruce')
@@ -387,13 +387,13 @@ def test_relationship_filter_many_to_many():
     tom.save()
     eq_(len(tom.friends.all()), 3)
     # Not a typo, wanted to check filter with no args
-    eq_(len(tom.friends.filter()), 3) 
+    eq_(len(tom.friends.filter()), 3)
     eq_(len(tom.friends.filter(name="bruce")), 1)
     eq_(len(tom.friends.filter(name__startswith="b")), 2) # bill & bruce
     eq_(len(tom.friends.filter(name__istartswith="B")), 2)
     eq_(len(tom.friends.filter(name__contains="b")), 3) # bill, bruce and robert
     eq_(len(tom.friends.filter(name__icontains="B")), 3)
-    
+
 @with_setup(None, teardown)
 @raises(ObjectDoesNotExist)
 def test_relationship_get_by_id():
@@ -476,7 +476,7 @@ def test_relationship_delete():
 
     qs = p.choices.filter(votes__gte=1) # all but Matt
     qs.delete()
-    
+
     p = list(PollDelete.objects.all())[0]
     eq_(len(ChoiceDelete.objects.all()), 1)
     eq_(len(p.choices.all()), 1)

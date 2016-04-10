@@ -7,9 +7,9 @@ from time import sleep
 def setup():
     global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings, models
 
-    from neo4django.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
             neo_constants, settings
-    from neo4django.db import models
+    from neo4django2.db import models
 
 def teardown():
     gdb.cleandb()
@@ -78,6 +78,6 @@ def test_autoproperty_transactionality():
             queue.put(str(e))
         else:
             queue.put(True)
-    
+
     race(autorace, 3)
     eq_(len(set(m.some_id for m in AutoRaceModel.objects.all())), 3)

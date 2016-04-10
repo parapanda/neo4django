@@ -7,11 +7,11 @@ from django.forms import ModelChoiceField, ModelMultipleChoiceField
 from django.utils.text import capfirst
 from django.dispatch import receiver
 
-from neo4django import Incoming, Outgoing
-from neo4django.db import DEFAULT_DB_ALIAS
-from neo4django.decorators import not_implemented, transactional
-from neo4django.utils import AssignableList, AttrRouter
-from neo4django.constants import INTERNAL_ATTR, ORDER_ATTR
+from neo4django2 import Incoming, Outgoing
+from neo4django2.db import DEFAULT_DB_ALIAS
+from neo4django2.decorators import not_implemented, transactional
+from neo4django2.utils import AssignableList, AttrRouter
+from neo4django2.constants import INTERNAL_ATTR, ORDER_ATTR
 from .base import NodeModel
 from .query import (NodeQuerySet, Query, cypher_rel_str)
 from .cypher import  (Clauses, Start, With, Match, Path, NodeComponent,
@@ -735,7 +735,7 @@ class RelationshipInstance(models.Manager):
             for neo_rel in neo_rels:
                 rels_by_node[neo_rel.start.url].append(neo_rel)
                 rels_by_node[neo_rel.end.url].append(neo_rel)
-                
+
             for obj in objs:
                 candidate_rels = rels_by_node[obj.node.url] if hasattr(obj, 'node') else []
                 if candidate_rels:

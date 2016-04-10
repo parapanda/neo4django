@@ -8,9 +8,9 @@ def setup():
     global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings,\
            models, tzoffset, tzutc
 
-    from neo4django.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
             neo_constants, settings
-    from neo4django.db import models
+    from neo4django2.db import models
 
     try:
         from dateutil.tz import tzutc, tzoffset
@@ -43,7 +43,7 @@ def test_none_prop():
     pete = Person()
     pete.save()
     assert pete.name is None
-    
+
     #then that `null=False` works properly
     class NotNullPerson(models.NodeModel):
         class Meta:
@@ -75,7 +75,7 @@ def test_integer():
 
     for i in [0,1,-1,28,neo4django.db.models.properties.MAX_INT,neo4django.db.models.properties.MIN_INT]:
         try_int(i)
-    
+
 def test_date_constructor():
     class DateNode(models.NodeModel):
         date = models.DateProperty()
@@ -267,7 +267,7 @@ def test_int_array_property():
     """Tests that IntArrayProperty validates, saves and returns properly."""
     class IntArrayNode(models.NodeModel):
         vals = models.IntArrayProperty()
-    
+
     n1 = IntArrayNode(vals = (1,2,3))
     eq_(n1.vals, (1,2,3))
     n1.save()

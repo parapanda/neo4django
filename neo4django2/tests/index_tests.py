@@ -3,8 +3,8 @@ from nose.tools import with_setup, eq_
 def setup():
     global Person, neo4django, settings, gdb, models
 
-    from neo4django.tests import Person, neo4django, gdb
-    from neo4django.db import models
+    from neo4django2.tests import Person, neo4django, gdb
+    from neo4django2.db import models
 
 def teardown():
     gdb.cleandb()
@@ -71,7 +71,7 @@ def test_default_parents_index():
             "The grandchild node wasn't indexed properly."
 
 def test_indexed_types():
-    from neo4django.constants import TYPE_ATTR
+    from neo4django2.constants import TYPE_ATTR
     from neo4jrestclient.client import NotFoundError
 
     def get_indexed_type_ids(cls):
