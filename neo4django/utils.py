@@ -1,11 +1,11 @@
+# coding=utf-8
 import itertools
-
 from abc import ABCMeta
 from collections import defaultdict
+from importlib import import_module
 from threading import local
 
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.importlib import import_module
 
 from neo4django.decorators import transactional
 from neo4django.neo4jclient import EnhancedGraphDatabase
@@ -27,6 +27,7 @@ class StubbornDict(dict):
             return
         return super(StubbornDict, self).__setitem__(key, value)
 
+
 def copy_func(func):
     """
     Return a copy of a function with a shallow copy of the original's
@@ -36,6 +37,7 @@ def copy_func(func):
     return types.FunctionType(func.func_code, dict(func.func_globals),
                               name=func.func_name, argdefs=func.func_defaults,
                               closure=func.func_closure)
+
 
 def sliding_pair(seq):
     """
@@ -167,9 +169,10 @@ def countdown(number):
     """
     counter = itertools.count()
 
-    def done(*junk):
+    def done(*_):
         for count in counter:
             return count < number
+
     return done
 
 
@@ -260,21 +263,17 @@ class AttrRouter(object):
 
     This approach won't work for special methods, like __len__- I haven't tested
     which cause problems. If there's another attribute with the same name in the
-    inheritance heirarchy as a routed attribute, and comes up before AttrRouter
+    inheritance hierarchy as a routed attribute, and comes up before AttrRouter
     in the MRO, it will be used, instead- this was an intentional decision.
 
     Obviously (or maybe not), if you set self.member to another object, calls
-    will still be routed to the original. Unroute, or route to a new object,
+    will still be routed to the original. Un-route, or route to a new object,
     before doing that. In the future, I'll try to support that use case.
-
-    I came up with this to solve a pain point, but I might be missing something.
-    Forgive me if there's a more natural solution, and let me know!
-    - Matt Luongo, mhluongo 'at' g mail.com
     """
-    #TODO use weakrefs in the router dictionary
-    #TODO allow specifying a base object and then a string attribute to support
-    #the case where routing to self.member, where member changes frequently-
-    #eg self._route(['method1'], self, member_chain = ['member'])
+    # TODO use weakrefs in the router dictionary
+    # TODO allow specifying a base object and then a string attribute to support
+    # the case where routing to self.member, where member changes frequently-
+    # eg self._route(['method1'], self, member_chain = ['member'])
     __metaclass__ = ABCMeta
     __router_dict_key = '_AttrRouter__attr_route_dict'
 
@@ -307,7 +306,7 @@ class AttrRouter(object):
         Sets the routed attribute named `name` to `value`. If not routed, the
         class defers to super's __setattr__
         """
-        #remember, getattr and setattr don't work the same way
+        # remember, getattr and setattr don't work the same way
         if name in self._router['set']:
             return setattr(self._router['set'][name], name, value)
         return super(AttrRouter, self).__setattr__(name, value)
@@ -323,39 +322,39 @@ class AttrRouter(object):
             return delattr(router[name], name)
         return super(AttrRouter, self).__delattr__(name)
 
-    def _build_dict_list(self, get=True, set=False, delete=False):
+    def _build_dict_list(self, has_get=True, has_set=False, has_delete=False):
         """
         Constructs a list of all routed attribute dicts for get/set/del
         indicated by keyword arguments `get`, `set`, `delete`
         """
         dicts = []
 
-        if set:
+        if has_set:
             dicts.append(self._router['set'])
 
-        if get:
+        if has_get:
             dicts.append(self._router['get'])
 
-        if delete:
+        if has_delete:
             dicts.append(self._router['del'])
 
         return dicts
 
-    def _route(self, attrs, obj, get=True, set=False, delete=False):
+    def _route(self, attrs, obj, has_get=True, has_set=False, has_delete=False):
         """
         Routes `attrs` to `obj` for get/set/del operations indicated by
         keyword boolean args `get`, `set`, and `delete`.
         """
-        for d in self._build_dict_list(get=get, set=set, delete=delete):
+        for d in self._build_dict_list(has_get=has_get, has_set=has_set, has_delete=has_delete):
             for attr in attrs:
                 d[attr] = obj
 
-    def _unroute(self, attrs, get=True, set=False, delete=False):
+    def _unroute(self, attrs, has_get=True, has_set=False, has_delete=False):
         """
         Removes `attrs` routed to `obj` from  routing lists get/set/del
         indicated by keyword boolean args `get`, `set`, and `delete`.
         """
-        for d in self._build_dict_list(get=get, set=set, delete=delete):
+        for d in self._build_dict_list(has_get=has_get, has_set=has_set, has_delete=has_delete):
             for attr in itertools.ifilter(lambda x: x in d, attrs):
                 del d[attr]
 
@@ -363,13 +362,13 @@ class AttrRouter(object):
         """
         Routes `attrs` to `obj` for get/set/del operations
         """
-        self._route(attrs, obj, get=True, set=True, delete=True)
+        self._route(attrs, obj, has_set=True, has_delete=True)
 
     def _unroute_all(self, attrs, obj):
         """
         Removes `attrs` routed to `obj` from  routing lists get/set/del
         """
-        self._unroute(attrs, obj, get=True, set=True, delete=True)
+        self._unroute(attrs, obj, has_set=True, has_delete=True)
 
 
 class Neo4djangoIntegrationRouter(object):
@@ -379,7 +378,8 @@ class Neo4djangoIntegrationRouter(object):
     ORM will play nicely with Neo4j models
     """
 
-    def _is_node_model(self, obj):
+    @staticmethod
+    def _is_node_model(obj):
         """
         Checks if `obj` is a subclass of NodeModel. If `obj` is not a class
         type, a check if it is an instance of NodeModel is done instead.
@@ -392,7 +392,7 @@ class Neo4djangoIntegrationRouter(object):
         except TypeError:
             return isinstance(obj, NodeModel)
 
-    def allow_relation(self, obj1, obj2, **hints):
+    def allow_relation(self, obj1, obj2, **_):
         """
         Checks if a relation between `obj1` and `obj2` should be allowed. This
         is done by checking that both objects are either NodeModels or regular
@@ -402,7 +402,7 @@ class Neo4djangoIntegrationRouter(object):
             return False
         return None
 
-    def allow_syncdb(self, db, model):
+    def allow_syncdb(self, _, model):
         """
         Checks if `model` class should be synced to `db`. This is always False
         for NodeModels
@@ -412,7 +412,7 @@ class Neo4djangoIntegrationRouter(object):
         return None
 
 
-## TODO: I think this connection stuff  might belong elsewhere?
+# TODO: I think this connection stuff  might belong elsewhere?
 class ConnectionDoesNotExist(Exception):
     pass
 
@@ -425,7 +425,7 @@ def load_client(client_path):
     cannot be import or the imported class is not a subclass of `EnhancedGraphDatabase`.
     """
 
-    client_modname, client_classname = client_path.rsplit('.', 1)
+    client_modname, client_class_name = client_path.rsplit('.', 1)
 
     try:
         client_mod = import_module(client_modname)
@@ -433,10 +433,10 @@ def load_client(client_path):
         raise ImproperlyConfigured("Could not import %s as a client" % client_path)
 
     try:
-        client = getattr(client_mod, client_classname)
+        client = getattr(client_mod, client_class_name)
     except AttributeError:
         raise ImproperlyConfigured("Neo4j client module %s has no class %s" %
-                                   (client_mod, client_classname))
+                                   (client_mod, client_class_name))
 
     if not issubclass(client, EnhancedGraphDatabase):
         raise ImproperlyConfigured("%s is not a subclass of EnhancedGraphDatabase" % client_path)
@@ -480,9 +480,9 @@ class ConnectionHandler(object):
         for setting in ['HOST', 'PORT']:
             conn.setdefault(setting, '')
 
-        # TODO: We can add these back in if we upgrade to supporting 1.6
-        # for setting in ['USER', 'PASSWORD']:
-        #     conn.setdefault(setting, None)
+            # TODO: We can add these back in if we upgrade to supporting 1.6
+            # for setting in ['USER', 'PASSWORD']:
+            #     conn.setdefault(setting, None)
 
     def __getitem__(self, alias):
         if hasattr(self._connections, alias):

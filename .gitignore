@@ -13,3 +13,6 @@ virtualenv
 lib
 build
 dist
+/.idea
+/docker/data/*
+/docker/conf/*

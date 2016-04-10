@@ -1,0 +1,15 @@
+graph:
+    image: neo4j:2.3.2
+    hostname: graph
+    environment:
+        NEO4J_AUTH: none
+        NEO4J_SERVER_ID: graph001
+    volumes:
+        - './data/:/data:rw'
+        - './conf/:/conf/:rw'
+    ports:
+        - '7474:7474'
+    ulimits:
+        nofile:
+            soft: 40000
+            hard: 40000

@@ -167,13 +167,13 @@ def test_attrrouter_dels_routed():
 
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_route_get():
-    router._route(('foo',), member, get=True)
+    router._route(('foo',), member, has_get=True)
     assert router.foo == 'bar'
 
 
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_route_set():
-    router._route(('foo',), member, set=True)
+    router._route(('foo',), member, has_set=True)
     router.foo = 'baz'
 
     assert router.foo == 'baz'
@@ -182,7 +182,7 @@ def test_attrrouter_route_set():
 
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_route_delete():
-    router._route(('foo',), member, delete=True)
+    router._route(('foo',), member, has_delete=True)
     del router.foo
 
     # It should delete both places
@@ -193,16 +193,16 @@ def test_attrrouter_route_delete():
 @raises(AttributeError)
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_unroute_get():
-    router._route(('foo',), member, get=True)
-    router._unroute(('foo',), get=True)
+    router._route(('foo',), member, has_get=True)
+    router._unroute(('foo',), has_get=True)
     router.foo
 
 
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_unroute_set():
     # Check routed
-    router._route(('foo',), member, set=True)
-    router._unroute(('foo',), set=True)
+    router._route(('foo',), member, has_set=True)
+    router._unroute(('foo',), has_set=True)
     router.foo = 'baz'
 
     # Should be different
@@ -214,8 +214,8 @@ def test_attrrouter_unroute_set():
 @with_setup(setup_attrrouter, None)
 def test_attrrouter_unroute_delete():
     # Check routed
-    router._route(('foo',), member, delete=True)
-    router._unroute(('foo',), delete=True)
+    router._route(('foo',), member, has_delete=True)
+    router._unroute(('foo',), has_delete=True)
     del router.foo
 
 
