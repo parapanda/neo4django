@@ -2,9 +2,9 @@ from nose.tools import eq_, with_setup, raises
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 
 def setup():
-    global Person, neo4jdjango2, settings, gdb, models
+    global Person, neo4django2, settings, gdb, models
 
-    from neo4django2.tests import Person, neo4jdjango2, gdb
+    from neo4django2.tests import Person, neo4django2, gdb
     from neo4django2.db import models
 
 def teardown():
@@ -17,7 +17,7 @@ def test_basic_relationship():
     """
     class RelatedPaper(models.NodeModel):
         authors = models.Relationship(Person,
-                rel_type = neo4jdjango2.Outgoing.OWNED_BY,
+                rel_type = neo4django2.Outgoing.OWNED_BY,
                 related_name = 'papers'
             )
 
@@ -42,7 +42,7 @@ def test_basic_relationship():
 def test_basic_relationship_manager():
     class SomeOtherPaper(models.NodeModel):
         authors = models.Relationship(Person,
-                rel_type = neo4jdjango2.Outgoing.OTHER_OWNED_BY,
+                rel_type = neo4django2.Outgoing.OTHER_OWNED_BY,
                 related_name = 'papers'
             )
     pete = Person.objects.create(name="PETE!")
@@ -71,7 +71,7 @@ def test_one_to_many():
 
     class Reference1(models.NodeModel):
         origin = models.Relationship(Origin1,
-                                         rel_type=neo4jdjango2.Outgoing.REFERS_TO,
+                                         rel_type=neo4django2.Outgoing.REFERS_TO,
                                          related_name='references',
                                          single=True)
 
@@ -90,7 +90,7 @@ def test_many_to_one():
 
     class Reference2(models.NodeModel):
         origin = models.Relationship(Origin2,
-                                         rel_type=neo4jdjango2.Outgoing.REFERS_TO,
+                                         rel_type=neo4django2.Outgoing.REFERS_TO,
                                          #TODO explore edge direction here, this is wrong
                                          related_name='references',
                                          single=True)
@@ -111,7 +111,7 @@ def test_related_one_to_many():
     class AnotherOrigin(models.NodeModel):
         name = models.StringProperty()
         references = models.Relationship(AnotherReference,
-                                         rel_type=neo4jdjango2.Outgoing.REFERS_TO,
+                                         rel_type=neo4django2.Outgoing.REFERS_TO,
                                          related_name='origin',
                                          related_single=True)
 
@@ -131,7 +131,7 @@ def test_related_many_to_one():
     class AnotherOrigin1(models.NodeModel):
         name = models.StringProperty()
         references = models.Relationship(AnotherReference1,
-                                         rel_type=neo4jdjango2.Outgoing.REFERS_TO,
+                                         rel_type=neo4django2.Outgoing.REFERS_TO,
                                          related_name='origin',
                                          related_single=True)
     origin = AnotherOrigin1(name='CNN')
@@ -150,7 +150,7 @@ def test_one_to_one():
     class Stalker(models.NodeModel):
         name = models.StringProperty()
         person = models.Relationship(Person,
-                                            rel_type=neo4jdjango2.Outgoing.POINTS_TO,
+                                            rel_type=neo4django2.Outgoing.POINTS_TO,
                                             single=True,
                                             related_single=True
                                         )
@@ -174,7 +174,7 @@ def test_ordering():
 
     class MovieCredits(models.NodeModel):
         actors = models.Relationship(Actor,
-                                         rel_type=neo4jdjango2.Incoming.ACTS_IN,
+                                         rel_type=neo4django2.Incoming.ACTS_IN,
                                          related_name='movies',
                                          preserve_ordering=True,
                                         )
@@ -213,7 +213,7 @@ def test_multinode_setting():
     """Tests setting a multi-node relationship directly instead of adding."""
     class Classroom(models.NodeModel):
         students = models.Relationship('Student',
-                                rel_type=neo4jdjango2.Outgoing.COMES_TO,
+                                rel_type=neo4django2.Outgoing.COMES_TO,
                                 related_name="school"
                                 )
     class Student(models.NodeModel):
@@ -234,7 +234,7 @@ def test_multinode_setting():
 def test_rel_metadata():
     class NodeWithRelMetadata(models.NodeModel):
         contacts = models.Relationship(Person,
-                                           rel_type=neo4jdjango2.Outgoing.KNOWS_1,
+                                           rel_type=neo4django2.Outgoing.KNOWS_1,
                                            metadata={'test':123})
     meta_fields = filter(lambda f: hasattr(f, 'meta'), NodeWithRelMetadata._meta.fields)
     eq_(len(meta_fields), 1)
@@ -254,8 +254,8 @@ def test_rel_self():
 
 def test_rel_string_target():
     class Child(models.NodeModel):
-        parents = models.Relationship('neo4jdjango2.Person',
-                                      neo4jdjango2.Outgoing.CHILD_OF)
+        parents = models.Relationship('neo4django2.Person',
+                                      neo4django2.Outgoing.CHILD_OF)
 
     assert 'child_set' in (f.name for f in Person._meta.fields)
 
@@ -290,7 +290,7 @@ def test_relationship_none():
 
     class Choice(models.NodeModel):
         poll = models.Relationship(Poll,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -312,7 +312,7 @@ def test_relationship_count():
 
     class CountingChoice(models.NodeModel):
         poll = models.Relationship(CountingPoll,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -335,7 +335,7 @@ def test_relationship_filter():
 
     class ChoiceF(models.NodeModel):
         poll = models.Relationship(PollF,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -408,7 +408,7 @@ def test_relationship_get_by_id():
 
     class ChoiceG(models.NodeModel):
         poll = models.Relationship(PollG,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -433,7 +433,7 @@ def test_relationship_create():
 
     class ChoiceCreate(models.NodeModel):
         poll = models.Relationship(PollCreate,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -453,7 +453,7 @@ def test_relationship_delete():
 
     class ChoiceDelete(models.NodeModel):
         poll = models.Relationship(PollDelete,
-                                    rel_type=neo4jdjango2.Incoming.OWNS,
+                                    rel_type=neo4django2.Incoming.OWNS,
                                     single=True,
                                     related_name='choices')
         choice = models.StringProperty()
@@ -590,7 +590,7 @@ def test_rel_cache():
 
         deliciousness = models.StringProperty(max_length=1,
                                           choices=DELICIOUSNESS_CHOICES)
-        on_top_of = models.Relationship('Knight', related_name="spams", rel_type=neo4jdjango2.Outgoing.GOES_WITH)
+        on_top_of = models.Relationship('Knight', related_name="spams", rel_type=neo4django2.Outgoing.GOES_WITH)
 
     k = Knight.objects.create(number_of_limbs=1)
     s = Spam.objects.create(deliciousness=Spam.VERY_DELICIOUS)
@@ -611,7 +611,7 @@ def test_conflicting_rel_types():
         warnings.simplefilter("always")
 
         class ConflictedModel(models.NodeModel):
-            first_rel = models.Relationship('self', rel_type=neo4jdjango2.Outgoing.CONFLICTS_WITH)
-            second_rel = models.Relationship('self', rel_type=neo4jdjango2.Outgoing.CONFLICTS_WITH)
+            first_rel = models.Relationship('self', rel_type=neo4django2.Outgoing.CONFLICTS_WITH)
+            second_rel = models.Relationship('self', rel_type=neo4django2.Outgoing.CONFLICTS_WITH)
 
         assert len(w) > 0

@@ -258,7 +258,7 @@ def test_integration_router_allow_relation_between_django_models():
 
 
 @raises(ImproperlyConfigured)
-@patch('neo4jdjango2.utils.import_module')
+@patch('neo4django2.utils.import_module')
 def test_load_client_fail_module_import(import_module):
     import_module.side_effect = ImportError
 
@@ -270,7 +270,7 @@ def test_load_client_fail_module_import(import_module):
 
 
 @raises(ImproperlyConfigured)
-@patch('neo4jdjango2.utils.import_module')
+@patch('neo4django2.utils.import_module')
 def test_load_client_module_class_missing(import_module):
     import_module.return_value = stub(foo='bar')
 
@@ -282,7 +282,7 @@ def test_load_client_module_class_missing(import_module):
 
 
 @raises(ImproperlyConfigured)
-@patch('neo4jdjango2.utils.import_module')
+@patch('neo4django2.utils.import_module')
 def test_load_client_not_correct_subclass(import_module):
     MyClass = type('MyClass', (object,), {})
     import_module.return_value = stub(baz=MyClass)
@@ -294,7 +294,7 @@ def test_load_client_not_correct_subclass(import_module):
         raise e
 
 
-@patch('neo4jdjango2.utils.import_module')
+@patch('neo4django2.utils.import_module')
 def test_load_client(import_module):
     MyClass = type('MyClass', (EnhancedGraphDatabase,), {})
     import_module.return_value = stub(baz=MyClass)

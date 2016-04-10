@@ -9,9 +9,9 @@ class MyGraphDatabase(EnhancedGraphDatabase):
         return "did something"
 
 def setup():
-    global neo4jdjango2, gdb, neo4jclient, connection
+    global neo4django2, gdb, neo4jclient, connection
 
-    from neo4django2.tests import neo4jdjango2, gdb
+    from neo4django2.tests import neo4django2, gdb
     from neo4django2 import neo4jclient
     from neo4django2.db import connection
 

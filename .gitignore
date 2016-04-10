@@ -10,9 +10,10 @@
 \.#*
 virtualenv
 .env
-lib
-build
-dist
-/.idea
+/lib
+/build
+/dist
+.idea
 /docker/neo4j/data/*
 /docker/neo4j/conf/*
+/*.egg-info

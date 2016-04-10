@@ -9,10 +9,10 @@ import sys, datetime
 stdout = sys.stdout
 
 def setup():
-    global Person, neo4jdjango2, gdb, Query, OPERATORS, IndexedMouse, \
+    global Person, neo4django2, gdb, Query, OPERATORS, IndexedMouse, \
            DEFAULT_DB_ALIAS, Condition, models, RelatedCat, RelatedDog
 
-    from neo4django2.tests import Person, neo4jdjango2, gdb
+    from neo4django2.tests import Person, neo4django2, gdb
     from neo4django2.db import DEFAULT_DB_ALIAS, models
     from neo4django2.db.models.query import Query, OPERATORS, \
             Condition

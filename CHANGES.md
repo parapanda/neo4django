@@ -2,13 +2,15 @@
 
 #### 0.2.0 (2016-4-10)
 
+* Renamed project to neo4django2 to avoid confusion w/ original project
 * Added Neo4j Docker example 
 * Upgraded to django 1.9+
 * Upgraded to httplib2 0.9+
 * Upgraded to decorator 4+
 * Upgraded to python-dateutil 2.5+
 * Upgraded to lucene-querybuilder 0.2+
-* Upgraded to neo4jrestclient 2=
+* Upgraded to neo4jrestclient 2+
+* Upgraded test requirments
 * Added support for fixed-point number
 * Added support for floating-point number
 

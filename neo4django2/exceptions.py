@@ -1,5 +1,5 @@
 class Error(Exception):
-    """Base class for neo4jdjango2 exceptions."""
+    """Base class for neo4django2 exceptions."""
     pass
 
 
