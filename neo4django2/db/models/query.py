@@ -303,7 +303,7 @@ def cypher_predicate_from_condition(element_name, condition):
 
     cypher = None
 
-    # the neo4django field object
+    # the neo4jdjango2 field object
     field = condition.field
 
     #the value we're filtering against
@@ -427,7 +427,7 @@ def cypher_predicates_from_q(q):
                         OPERATORS.ISTARTSWITH, OPERATORS.IENDSWITH):
             return 'HAS(%s) AND (%s)' % (
                 # Remove "!" from value_exp
-                value_exp[:-1], 
+                value_exp[:-1],
                 cypher_predicate_from_condition(value_exp, q)
             )
         else:
@@ -552,7 +552,7 @@ def cypher_match_from_q(nodetype, q):
                     path.append(NodeComponent())
             path.append(NodeComponent(cypher_column_name_from_cond(cond)))
             paths.append(path)
-    
+
     return Match(Path(p) for p in paths)
 
 
@@ -709,8 +709,8 @@ def execute_select_related(models=None, query=None, index_name=None,
         for rel_id, node_id in itertools.izip(rel_it, node_it):
 
             if node_id not in models_so_far:
-                # we've loaded a node outside of neo4django, or of a type
-                # not yet loaded by neo4django. skip it.
+                # we've loaded a node outside of neo4jdjango2, or of a type
+                # not yet loaded by neo4jdjango2. skip it.
                 continue
 
             #make choice ab where it goes
@@ -722,7 +722,7 @@ def execute_select_related(models=None, query=None, index_name=None,
                                 if str(v.rel_type) == str(rel.type) and v.direction == rel.direction]
             if len(field_candidates) < 1:
                 # nowhere to put the node- it's either related outside
-                # neo4django or something else is going on
+                # neo4jdjango2 or something else is going on
                 continue
             elif len(field_candidates) > 1:
                 raise ValueError("Too many model field candidates for "
@@ -912,7 +912,7 @@ class Query(object):
 
         index_qs = not_none(lucene_query_and_index_from_q(using, self.model, q)
                             for q in filters)
-        
+
         # combine any queries headed for the same index and replace lucene
         # queries with strings
 
@@ -926,7 +926,7 @@ class Query(object):
 
         index_qs = [(key, unicode(val)) for key, val in index_qs_dict.iteritems()
                     if val is not None]
-        
+
         # use index lookups, ids, OR a type tree traversal as a cypher START,
         # then unindexed conditions as a WHERE
 
@@ -985,7 +985,7 @@ class Query(object):
         if order_by is not None:
             # decide where to inject the ORDER BY expression - if the fields
             # ordered aren't being returned, it needs to go before the RETURN
-        
+
             all_order_ids_returned = all(i in return_clause.passing_identifiers
                                          for i in order_by.required_identifiers)
             if isinstance(return_clause, Return) and all_order_ids_returned:
@@ -1020,7 +1020,7 @@ class Query(object):
                 exact_id_lookups_by_column[cypher_column_name_from_cond(lookup)]\
                         .append(lookup)
 
-            columns = uniqify(exact_id_lookups_by_column.keys() + 
+            columns = uniqify(exact_id_lookups_by_column.keys() +
                               in_id_lookups_by_column.keys())
 
             start_field_dict = {}

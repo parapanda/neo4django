@@ -419,7 +419,7 @@ class ConnectionDoesNotExist(Exception):
 
 def load_client(client_path):
     """
-    Imports a custom subclass of `neo4django.neo4jclient.EnhancedGraphDatabase`. The
+    Imports a custom subclass of `neo4jdjango2.neo4jclient.EnhancedGraphDatabase`. The
     only param `client_path` should be an importable python path string in the form
     `foo.bar.baz`. This method will raise an `ImproperlyConfigured` if a) the module/class
     cannot be import or the imported class is not a subclass of `EnhancedGraphDatabase`.
@@ -470,9 +470,9 @@ class ConnectionHandler(object):
         except KeyError:
             raise ConnectionDoesNotExist("The connection %s doesn't exist" % alias)
 
-        conn.setdefault('CLIENT', 'neo4django.neo4jclient.EnhancedGraphDatabase')
+        conn.setdefault('CLIENT', 'neo4jdjango2.neo4jclient.EnhancedGraphDatabase')
         if conn['CLIENT'] == 'django.db.backends.' or not conn['CLIENT']:
-            conn['CLIENT'] = 'neo4django.neo4jclient.EnhancedGraphDatabase'
+            conn['CLIENT'] = 'neo4jdjango2.neo4jclient.EnhancedGraphDatabase'
         conn.setdefault('OPTIONS', {})
         if 'HOST' not in conn or 'PORT' not in conn:
             raise ImproperlyConfigured('Each Neo4j database configured needs a configured host and port.')

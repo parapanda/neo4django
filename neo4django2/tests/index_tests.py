@@ -1,9 +1,9 @@
 from nose.tools import with_setup, eq_
 
 def setup():
-    global Person, neo4django, settings, gdb, models
+    global Person, neo4jdjango2, settings, gdb, models
 
-    from neo4django2.tests import Person, neo4django, gdb
+    from neo4django2.tests import Person, neo4jdjango2, gdb
     from neo4django2.db import models
 
 def teardown():

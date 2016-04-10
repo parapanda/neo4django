@@ -1,7 +1,7 @@
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-AUTHENTICATION_BACKENDS = ('neo4django.graph_auth.backends.NodeModelBackend',)
+AUTHENTICATION_BACKENDS = ('neo4jdjango2.graph_auth.backends.NodeModelBackend',)
 
 AUTH_USER_MODEL = 'graph_auth.User'
 
@@ -18,7 +18,7 @@ NEO4J_DATABASES = {
         'HOST':'localhost',
         'PORT':7474,
         'ENDPOINT':'/db/data',
-        'CLIENT': 'neo4django.tests.neo4jclient_tests.MyGraphDatabase',
+        'CLIENT': 'neo4jdjango2.tests.neo4jclient_tests.MyGraphDatabase',
         'OPTIONS':{
             'CLEANDB_URI': '/cleandb/supersecretdebugkey!',
         },
@@ -43,13 +43,13 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['neo4django.utils.Neo4djangoIntegrationRouter']
+DATABASE_ROUTERS = ['neo4jdjango2.utils.Neo4djangoIntegrationRouter']
 
 USE_TZ = True
 
 INSTALLED_APPS = (
-    'neo4django.tests',
-    'neo4django.graph_auth', 
+    'neo4jdjango2.tests',
+    'neo4jdjango2.graph_auth',
 )
 
 SECRET_KEY="shutupdjangowe'retryingtotesthere"

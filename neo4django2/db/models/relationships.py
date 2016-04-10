@@ -456,7 +456,7 @@ class SingleNode(BoundRelationship):
     def _load_related(self, node):
         relationships = self._load_relationships(node)
         #TODO seriously consider removing this restriction- I'm not sure I see
-        # any benefit, and it makes creating neo4django-compliant graphs that
+        # any benefit, and it makes creating neo4jdjango2-compliant graphs that
         # much more difficult.
         django_relationships = filter(lambda rel: rel[INTERNAL_ATTR], relationships)
         if len(django_relationships) < 1:
@@ -464,7 +464,7 @@ class SingleNode(BoundRelationship):
         elif len(django_relationships) > 1:
             raise ValueError("There's an ambiguous relationship set in the "
                              "database from node %d - there should only be one"
-                             " relationship flagged as '_neo4django' for a "
+                             " relationship flagged as '_neo4jdjango2' for a "
                              "single=True Relationship." % node.id)
         return self._neo4j_instance(node, django_relationships[0])
 

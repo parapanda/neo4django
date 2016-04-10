@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# neo4django documentation build configuration file, created by
+# neo4jdjango2 documentation build configuration file, created by
 # sphinx-quickstart on Thu Mar  7 12:27:41 2013.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'neo4django'
+project = u'neo4jdjango2'
 copyright = u'2013, Matt Luongo'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -164,7 +164,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'neo4djangodoc'
+htmlhelp_basename = 'neo4jdjango2doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,7 +183,7 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'neo4django.tex', u'neo4django Documentation',
+  ('index', 'neo4jdjango2.tex', u'neo4jdjango2 Documentation',
    u'Matt Luongo', 'manual'),
 ]
 
@@ -213,7 +213,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'neo4django', u'neo4django Documentation',
+    ('index', 'neo4jdjango2', u'neo4jdjango2 Documentation',
      [u'Matt Luongo'], 1)
 ]
 
@@ -227,8 +227,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'neo4django', u'neo4django Documentation',
-   u'Matt Luongo', 'neo4django', 'One line description of project.',
+  ('index', 'neo4jdjango2', u'neo4jdjango2 Documentation',
+   u'Matt Luongo', 'neo4jdjango2', 'One line description of project.',
    'Miscellaneous'),
 ]
 

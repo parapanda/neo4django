@@ -1,14 +1,14 @@
 """
-The neo4django test suite. Currently, these are rough development-oriented tests,
+The neo4jdjango2 test suite. Currently, these are rough development-oriented tests,
 and need to be expanded to be more robust.
 """
 
 from nose.tools import eq_
 
 def setup():
-    global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings, models
+    global Person, neo4jdjango2, gdb, neo4jrestclient, neo_constants, settings, models
 
-    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4jdjango2, gdb, neo4jrestclient, \
             neo_constants, settings
     from neo4django2.db import models
 
@@ -17,7 +17,7 @@ def teardown():
 
 def test_custom_manager():
 
-    class MyCustomManager(neo4django.db.models.manager.NodeModelManager):
+    class MyCustomManager(neo4jdjango2.db.models.manager.NodeModelManager):
         def my_custom_manager_method(self):
             pass
 
@@ -127,7 +127,7 @@ def test_model_casting():
     class Doppelganger(models.NodeModel):
         name = models.StringProperty()
         original = models.Relationship(Person,
-                                           rel_type=neo4django.Outgoing.MIMICS,
+                                           rel_type=neo4jdjango2.Outgoing.MIMICS,
                                            single=True)
     #create a person
     abe = Person.objects.create(name='Abraham Lincoln', age=202)
@@ -144,7 +144,7 @@ def test_model_casting_validation():
 def test_model_copy():
     class NameOwner(models.NodeModel):
         name = models.StringProperty()
-        confidantes = models.Relationship(Person, neo4django.Outgoing.KNOWS)
+        confidantes = models.Relationship(Person, neo4jdjango2.Outgoing.KNOWS)
 
     pete = Person(name='Pete')
     pete2 = NameOwner.copy_model(pete)

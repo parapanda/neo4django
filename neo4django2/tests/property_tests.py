@@ -5,10 +5,10 @@ import datetime
 import itertools
 
 def setup():
-    global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings,\
+    global Person, neo4jdjango2, gdb, neo4jrestclient, neo_constants, settings,\
            models, tzoffset, tzutc
 
-    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4jdjango2, gdb, neo4jrestclient, \
             neo_constants, settings
     from neo4django2.db import models
 
@@ -73,7 +73,7 @@ def test_integer():
         assert node.age == integer
         node.delete()
 
-    for i in [0,1,-1,28,neo4django.db.models.properties.MAX_INT,neo4django.db.models.properties.MIN_INT]:
+    for i in [0,1,-1,28,neo4jdjango2.db.models.properties.MAX_INT,neo4jdjango2.db.models.properties.MIN_INT]:
         try_int(i)
 
 def test_date_constructor():

@@ -1,6 +1,6 @@
 """
 Tests for built-in signals (e.g. 'post_delete', 'pre_save'), some of which
-are sent by methods that neo4django overrides.
+are sent by methods that neo4jdjango2 overrides.
 
 """
 from nose.tools import with_setup

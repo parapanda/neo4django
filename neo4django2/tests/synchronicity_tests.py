@@ -5,9 +5,9 @@ from Queue import Queue
 from time import sleep
 
 def setup():
-    global Person, neo4django, gdb, neo4jrestclient, neo_constants, settings, models
+    global Person, neo4jdjango2, gdb, neo4jrestclient, neo_constants, settings, models
 
-    from neo4django2.tests import Person, neo4django, gdb, neo4jrestclient, \
+    from neo4django2.tests import Person, neo4jdjango2, gdb, neo4jrestclient, \
             neo_constants, settings
     from neo4django2.db import models
 

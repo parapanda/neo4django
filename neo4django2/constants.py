@@ -1,6 +1,6 @@
 VERSION = '0.1.8'
 
-INTERNAL_ATTR = '_neo4django'
+INTERNAL_ATTR = '_neo4jdjango2'
 
 #gremlin-related constants
 ERROR_ATTR = INTERNAL_ATTR + '_error'
